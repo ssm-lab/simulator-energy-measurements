@@ -1,0 +1,41 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def moving_average_smoothing(data, window_size):
+    smoothed_data = pd.Series(data).rolling(window=window_size, center=True).mean()
+    return smoothed_data
+
+class Visual:
+    # ... [rest of the class remains unchanged]
+
+    def plot_continuous(self, columns, window_size=3):
+        for col in columns:
+            if col in ['package_0', 'dram_0', 'core_0', 'uncore_0']:
+                plt.figure(figsize=(12, 7))
+                power_col = f'{col}_power'
+
+                # Plotting the original power values over time
+                plt.plot(self.df['timestamp'], self.df[power_col], color='blue', label=power_col)
+
+                # Plotting the smoothed power values over time
+                smoothed_data = moving_average_smoothing(self.df[power_col], window_size)
+                plt.plot(self.df['timestamp'], smoothed_data, color='red', linestyle='--', label=f'{power_col}_smoothed')
+
+                # Adding vertical dotted lines and text for simulation start and end
+                plt.axvline(x=self.start_time, linestyle='--', color='black')
+                plt.axvline(x=self.end_time, linestyle='--', color='black')
+                plt.text(self.start_time, self.df[power_col].max(), 'sim start', verticalalignment='top')
+                plt.text(self.end_time, self.df[power_col].max(), 'sim end', verticalalignment='top')
+
+                # Setting plot title, labels, and showing the plot
+                plt.title(f'Power Consumption over Time for {col}')
+                plt.xlabel('Time (s)')
+                plt.ylabel('Power Consumption')
+                plt.grid(True)
+                plt.legend()
+                plt.tight_layout()
+                plt.show()
+
+# Test with your file path and time range
+test = Visual("/home/yimoning/research/pydevs/pyjoulse_test/result3.csv", 20, 60)
+test.plot_continuous(['package_0', 'dram_0', 'core_0', 'uncore_0'])
