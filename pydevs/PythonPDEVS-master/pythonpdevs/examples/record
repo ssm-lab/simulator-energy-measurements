@@ -1,0 +1,107 @@
+from pypdevs.DEVS import AtomicDEVS, CoupledDEVS
+from pypdevs.simulator import Simulator
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+class SIRCell(AtomicDEVS):
+    def __init__(self, name, initial_state, neighbors, cells):
+        AtomicDEVS.__init__(self, name)
+        self.state = initial_state
+        self.ta = 1.0
+        self.beta = 0.3
+        self.gamma = 0.1
+        self.inport = self.addInPort("inport")
+        self.outport = self.addOutPort("outport")
+        self.neighbors = neighbors
+        self.cells = cells
+        self.infect_charisticristic = (0.999, 0.001, 0.0)
+
+    def intTransition(self):
+        self.infect_neighbors()
+        S, I, R = self.state
+        new_S = S - self.beta * S * I
+        new_I = I + self.beta * S * I - self.gamma * I
+        new_R = R + self.gamma * I
+        return new_S, new_I, new_R
+
+    def infect_neighbors(self):
+        if self.state[1] > 0:  # If the current cell is infected
+            for neighbor in self.neighbors:
+                if self.cells[neighbor].state[1] == 0:
+                    # If the neighbor is not infected infect them with a fixed value
+                    self.cells[neighbor].state = self.infect_charisticristic
+
+    def timeAdvance(self):
+        return self.ta
+
+    def outputFnc(self):
+        return {self.outport: self.state}
+
+class SIRGrid(CoupledDEVS):
+    def __init__(self, size):
+        CoupledDEVS.__init__(self, "SIRGrid")
+        self.size = size
+        self.cells = {}
+        for i in range(size):
+            for j in range(size):
+                name = f"cell_{i}_{j}"
+                initial_state = (0.99, 0.01, 0.0) if i == size // 2 and j == size // 2 else (1.0, 0.0, 0.0)
+                neighbors = [(x, y) for x in range(i-1, i+2) for y in range(j-1, j+2) if (x, y) != (i, j) and 0 <= x < size and 0 <= y < size]
+                self.cells[(i, j)] = self.addSubModel(SIRCell(name, initial_state, neighbors, self.cells))
+
+if __name__ == "__main__":
+    # size = int(100000 ** 0.5)
+    size = 50
+    sirGrid = SIRGrid(size)
+    sim = Simulator(sirGrid)
+    sim.setTerminationTime(100)
+    sim.setVerbose(None)
+    sim.simulate()
+
+    infected_matrix = np.zeros((size, size))
+
+    for i in range(size):
+        for j in range(size):
+            cell_state = sirGrid.cells[(i, j)].state
+            infected_matrix[i, j] = cell_state[1]  # Store the infected percentage
+            print(f"Cell ({i}, {j}) state: {cell_state}")
+
+    # Plot the heatmap
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(infected_matrix, cmap='YlOrRd', annot=True)
+    plt.title("Infected Percentage in SIRGrid")
+    plt.show()
+    # for i in range(size):
+    #     for j in range(size):
+    #         cell_state = sirGrid.cells[(i, j)].state
+    #         print(f"Cell ({i}, {j}) state: {cell_state}")
+    # TODO: store in a df 5 columns each
+    # https://stackoverflow.com/questions/55517072/python-plotting-grid-based-on-values
+    # plotly
+    # https://python-graph-gallery.com/heatmap/
+# main factor of energy consumption
+# pdevs cost
+# size vs consumption    10*10 --> 100*100 --> .... 10000 characteristic
+# do certain number of sim
+
+
+import time
+from pyJoules.energy_meter import measure_energy
+from pyJoules.handler.csv_handler import CSVHandler
+import sys
+sys.path.append('/home/yimoning/research/pydevs/PythonPDEVS-master')
+from SIR_Model import *  # This imports everything from SIR_Model
+
+# Initialize the CSVHandler to save data to 'energy_consumption.csv'
+# csv_handler = CSVHandler('energy_consumption_run.csv')
+csv_handler = CSVHandler('result3.csv')
+# csv_handler = CSVHandler('energy_consumption.csv')
+# Decorate the function to measure its energy consumption
+@measure_energy(handler=csv_handler)
+def measure_energy_for_one_second():
+    time.sleep(1)  # Sleep for one second
+
+if __name__ == '__main__':
+    for _ in range(20):
+        measure_energy_for_one_second()
+    csv_handler.save_data()

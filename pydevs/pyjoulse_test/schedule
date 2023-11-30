@@ -1,0 +1,22 @@
+#!/bin/bash
+sudo chmod -R 755 /sys/class/powercap/intel-rapl/
+begin_time=$(date +%s)  # Get the current timestamp
+python3 /home/yimoning/research/pydevs/pyjoulse_test/first_demo.py &
+PID1=$!
+echo "process starts"
+echo "Starting sleep"
+sleep 10
+echo "Sleep finished, starting SIR_test.py"
+start_time=$(date +%s)  # Get the current timestamp
+echo "$start_time"
+python3 /home/yimoning/research/pydevs/PythonPDEVS-master/pythonpdevs/examples/SIR_test.py &
+PID2=$!
+echo "waiting for sim running"
+wait $PID2  # This will wait until SIR_test.py finishes
+end_time=$(date +%s)  # Get the current timestamp after SIR_test.py finishes
+real_start=$((start_time - begin_time))
+real_end=$((end_time - begin_time))
+echo "sim has finished"
+echo "---- cool down -----"
+wait $PID1
+#python3 /home/yimoning/research/pydevs/pyjoulse_test/VisualizeData.py $real_start $real_end
