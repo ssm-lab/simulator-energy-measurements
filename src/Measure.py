@@ -5,7 +5,7 @@ from pyJoules.energy_meter import measure_energy
 from pyJoules.handler.csv_handler import CSVHandler
 import sys
 import util.singletonFlag as us
-import util.constants as uc
+
 
 class EnergyMeasurement:
 

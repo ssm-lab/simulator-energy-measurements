@@ -4,6 +4,7 @@ from datetime import datetime
 from src.MeasureStrategy import MeasurementStrategy
 import util.singletonFlag as us
 
+
 class DurationBasedMeasurement(MeasurementStrategy):
     def __init__(self, outfile_name, data_folder):
         super().__init__(outfile_name, data_folder)
