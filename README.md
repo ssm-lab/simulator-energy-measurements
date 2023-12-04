@@ -6,21 +6,11 @@ Only for UNIX systems.
 pyJoules uses the Intel Running Average Power Limit (RAPL) technology to estimate energy consumption, and RAPL is implemented only for UNIX systems.
 
 # Repository Structure
-
-The repository is organized as follows to facilitate energy profiling of Python programs using the pyJoules toolkit:
-
-- `data/` - Directory for storing data files that are either input for simulations or output from energy measurements.
-
-[//]: # (- `pydevs/` - Contains the PythonPDEVS library or related models for simulation.)
-
-- `pyJoules/` - A third-party library for precise energy measurement.
-- `src/` - Main source code directory.
-  - `MeasureStrategy.py` - Abstract base class providing the template for energy measurement strategies.
-  - `DurationBasedMeasurement.py` - Implements duration-based energy measurement extending the MeasurementStrategy, which measure the energy consumed the energy consumed by each machine component periodically until a signal has been received.
-  - `FixedPeriodMeasurement.py` - Implements fixed-period energy measurement extending the MeasurementStrategy, which periodically measure the energy consumed over a specific period.
-  - `MeasurementExecutor.py` - Executes a measurement strategy instance.
-  - `ModelExecutor.py` - Coordinates the execution of measurable and energy measurements.
 - `util/` - Utility scripts and helper functions to support the main application.
+- `DurationBasedMeasurementStrategy.py` - Implements duration-based energy measurement extending the MeasurementStrategy, which measure the energy consumed the energy consumed by each machine component periodically until a signal has been received.
+- `FixedPeriodMeasurementStrategy.py` - Implements fixed-period energy measurement extending the MeasurementStrategy, which periodically measure the energy consumed over a specific period.
+- `MeasurementStrategy.py` - Abstract base class providing the template for energy measurement strategies.
+- `MeasurementExecutor.py` - Executes a measurement strategy instance.
 
 # Setup guide
 - Clone this repository.
