@@ -13,16 +13,14 @@ The repository is organized as follows to facilitate energy profiling of Python 
 
 [//]: # (- `pydevs/` - Contains the PythonPDEVS library or related models for simulation.)
 
+- `pyJoules/` - A third-party library for precise energy measurement.
 - `src/` - Main source code directory.
   - `MeasureStrategy.py` - Abstract base class providing the template for energy measurement strategies.
   - `DurationBasedMeasurement.py` - Implements duration-based energy measurement extending the MeasurementStrategy, which measure the energy consumed the energy consumed by each machine component periodically until a signal has been received.
   - `FixedPeriodMeasurement.py` - Implements fixed-period energy measurement extending the MeasurementStrategy, which periodically measure the energy consumed over a specific period.
   - `MeasurementExecutor.py` - Executes a measurement strategy instance.
   - `ModelExecutor.py` - Coordinates the execution of measurable and energy measurements.
-  - `util/` - Utility scripts and helper functions to support the main application.
-  - `pyJoules/` - A third-party library for precise energy measurement.
-
-- `README.md` - The comprehensive guide and documentation for setting up and using the energy profiling tool.
+- `util/` - Utility scripts and helper functions to support the main application.
 
 # Setup guide
 - Clone this repository.
