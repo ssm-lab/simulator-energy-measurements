@@ -1,7 +1,7 @@
 import time
 from datetime import datetime
 
-from src.MeasureStrategy import MeasurementStrategy
+from MeasurementStrategy import MeasurementStrategy
 
 import util.singletonFlag as us
 

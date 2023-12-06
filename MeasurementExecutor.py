@@ -1,19 +1,20 @@
+import logging
 import threading
 import time
 from abc import ABC, abstractmethod
-
-from pypdevs.simulator import Simulator
-
+from util.log_init import log_init
 from util.singletonFlag import Singleton
-
+from MeasurementStrategy import MeasurementStrategy
 
 # put a measuareable
 class MeasurementExecutor(ABC):
     def __init__(self):
+        log_init()
         self.strategy = None
         self.measuareable = None
         self.heat_up = 10
         self.cool_down = 10
+
 
     def set_heat_up(self, heat_up: int):
         self.heat_up = heat_up
@@ -39,14 +40,27 @@ class MeasurementExecutor(ABC):
         Singleton.get_instance().turnOff()
 
     def run_model(self):
-        Singleton.get_instance().flag_init()
-        Singleton.get_instance().store_time(label="Start")
-        measure_thread = threading.Thread(target=self.strategy.measure)
-        measure_thread.start()
-        time.sleep(self.heat_up)
-        measuareable_thread = threading.Thread(target=self.run_measuareable)
-        measuareable_thread.start()
-        measure_thread.join()
-        measuareable_thread.join()
-        Singleton.get_instance().flag_init()
+        try:
+            logging.info("Process start")
+            singleton = Singleton.get_instance()
+            singleton.flag_init()
+            singleton.store_time(label="Start")
+
+            measure_thread = threading.Thread(target=self.strategy.measure)
+            logging.info("Measurement start, waiting for measurable")
+            measure_thread.start()
+            time.sleep(self.heat_up)
+
+            measurable_thread = threading.Thread(target=self.run_measurable)
+            logging.info("Measurable start, processing...")
+            measurable_thread.start()
+
+            measure_thread.join()
+            measurable_thread.join()
+
+            singleton.flag_init()
+            logging.info("Process finished, success!")
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+
 

@@ -6,8 +6,8 @@ from datetime import datetime
 
 class Singleton:
     _instance = None
-    _filepath = "../data/singleton_flag.txt"
-    _time_filepath = "../data/timestamps.csv"
+    _filepath = "/home/yimoning/mcmaster/fall2023/new_simMeasure/_remove/data/singleton_flag.txt"
+    _time_filepath = "/home/yimoning/mcmaster/fall2023/new_simMeasure/_remove/data/timestamps.csv"
 
     def __init__(self):
         self.test = 0

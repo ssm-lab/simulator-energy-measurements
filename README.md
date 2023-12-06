@@ -98,7 +98,7 @@ from util.singletonFlag import Singleton
 class Demo(ModelExecutor):
     def __init__(self):
         super().__init__()
-        # config the measurement
+        # config the measurement input file name and data folder
         measure_model = DurationBasedMeasurement("test",
                                                  "/home/yimoning/mcmaster/fall2023/sim_energy_measurements/data/")
         # set up measurement executor

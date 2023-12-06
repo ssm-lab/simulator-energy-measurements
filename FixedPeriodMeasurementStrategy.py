@@ -1,7 +1,7 @@
 import time
 from datetime import datetime
 
-from src.MeasureStrategy import MeasurementStrategy
+from MeasurementStrategy import MeasurementStrategy
 
 import util.singletonFlag as us
 
@@ -12,7 +12,6 @@ class FixedPeriodMeasurementStrategy(MeasurementStrategy):
         self.duration = 1
         self.period = 10
         self.measure_func = self.measure_energy_decorator(self.csv_handler)(self._measure_func)
-
 
     def set_duration(self, seconds):
         self.duration = seconds

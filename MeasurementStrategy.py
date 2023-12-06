@@ -10,7 +10,6 @@ class MeasurementStrategy(ABC):
         self.DATA_FOLDER = data_folder
         self.csv_handler = CSVHandler(self.DATA_FOLDER + outfile_name)
 
-
     @abstractmethod
     def measure(self):
         pass

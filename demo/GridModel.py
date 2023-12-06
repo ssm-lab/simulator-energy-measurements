@@ -1,6 +1,6 @@
 from pypdevs.DEVS import CoupledDEVS
 from SIRCell import *
-from src.SIRCell_By_T import SIRCell_By_T
+from SIRCell_By_T import SIRCell_By_T
 
 
 class SIRGrid(CoupledDEVS):
