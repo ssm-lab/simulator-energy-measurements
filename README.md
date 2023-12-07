@@ -76,8 +76,8 @@ fixed_period_measure = FixedPeriodMeasurementStrategy('energy_output.csv', 'data
   - `cool_down`: The number of seconds for the cool-down period.
 - `set_measurable(measurable)`: Assigns the measurable object that will be executed.
   - `measurable`: An object that will be used in the `run_measureable()` method.
-- `set_executor(measure_executor: MeasurementExecutor)`: Assigns the measurement executor that will carry out the measurement strategy.
-  - `measure_executor`: An instance of the `MeasurementExecutor` class.
+- `set_strategy(new_strategy: MeasurementStrategy)`: Assigns the measurement strategy.
+  - `new_strategy`: An instance of the `MeasurementStrategy` class.
 
 ### Abstract Methods:
 - `run_measurable()`: An abstract method that should be implemented by the user to define the behavior of their measurable object.
