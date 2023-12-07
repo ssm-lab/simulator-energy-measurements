@@ -9,8 +9,7 @@ from util.singletonFlag import Singleton
 class Demo(MeasurementExecutor):
     def __init__(self):
         super().__init__()
-        measure_model = DurationBasedMeasurementStrategy("test",
-                                                 "/home/yimoning/mcmaster/fall2023/new_simMeasure/_remove/data/")
+        measure_model = DurationBasedMeasurementStrategy("test", "data/")
         # measure_executor = MeasurementExecutor(measure_model)
         sirGrid = SIRGrid(10)
         sim = Simulator(sirGrid)
