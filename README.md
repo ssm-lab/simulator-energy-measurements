@@ -37,15 +37,15 @@ This strategy is designed for measuring the energy consumed by each machine comp
 
 Example usage:
 ```python
-from src.DurationBasedMeasurement import DurationBasedMeasurement
+from DurationBasedMeasurementStrategy import DurationBasedMeasurementStrategy
 
 # Instantiate and configure the DurationBasedMeasurement strategy
-duration_measure = DurationBasedMeasurement('energy_output.csv', 'data/').set_duration(5)
+duration_measure = DurationBasedMeasurementStrategy('energy_output.csv', 'data/').set_duration(5)
 ```
-## FixedPeriodMeasurement
+## FixedPeriodMeasurementStrategy
 
 This strategy periodically measures energy consumption in a fixed period. 
-- `FixedPeriodMeasurement(outfile_name, data_folder)`: Initializes a new instance of the FixedPeriodMeasurement class.
+- `FixedPeriodMeasurementStrategy(outfile_name, data_folder)`: Initializes a new instance of the FixedPeriodMeasurement class.
   - `outfile_name`: The name of the output file where the measurement data will be saved.
   - `data_folder:` The path to the directory where the output file will be stored.
 #### API Methods:
@@ -56,10 +56,10 @@ This strategy periodically measures energy consumption in a fixed period.
 
 Example usage:
 ```python
-from src.FixedPeriodMeasurement import FixedPeriodMeasurement
+from FixedPeriodMeasurementStrategy import FixedPeriodMeasurementStrategy
 
 # Instantiate and configure the FixedPeriodMeasurement strategy using Fluent API
-fixed_period_measure = FixedPeriodMeasurement('energy_output.csv', 'data/').set_duration(2).set_period(60)
+fixed_period_measure = FixedPeriodMeasurementStrategy('energy_output.csv', 'data/').set_duration(2).set_period(60)
 ```
 
 ## MeasurementExecutor
@@ -104,7 +104,7 @@ class Demo(MeasurementExecutor):
         sirGrid = SIRGrid(100)
         measuareable = Simulator(sirGrid)
         # config the MeasurementExecutor by calling fluent API methods
-        self.set_executor(measure_model).set_measuareable(measuareable).set_heat_up(10).set_cool_down(10)
+        self.set_strategy(measure_model).set_measuareable(measuareable).set_heat_up(10).set_cool_down(10)
 
     def run_measuareable(self):
         # define the behavior of their measurable object.
