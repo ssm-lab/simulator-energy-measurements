@@ -1,3 +1,4 @@
+import logging
 import time
 from datetime import datetime
 
@@ -25,11 +26,10 @@ class FixedPeriodMeasurementStrategy(MeasurementStrategy):
         time.sleep(self.duration)
 
     def measure(self):
-        print("Measure starts")
-        print(datetime.now().strftime('%H:%M:%S'))
+        logging.info("Measurement start, waiting for measurable")
         while self.period > 0:
             self.measure_func()
             self.period -= self.duration
-        print("Measure done")
-        print(datetime.now().strftime('%H:%M:%S'))
+        logging.info("Measure done")
         self.csv_handler.save_data()
+        logging.info("Data successfully saved into" + self.file_loc)

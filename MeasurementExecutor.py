@@ -39,6 +39,7 @@ class MeasurementExecutor(ABC):
     def measurable_end(self):
         Singleton.get_instance().turnOff()
 
+
     def run_model(self):
         try:
             logging.info("Process start")
@@ -47,11 +48,11 @@ class MeasurementExecutor(ABC):
             singleton.store_time(label="Start")
 
             measure_thread = threading.Thread(target=self.strategy.measure)
-            logging.info("Measurement start, waiting for measurable")
+
             measure_thread.start()
             time.sleep(self.heat_up)
 
-            measurable_thread = threading.Thread(target=self.run_measurable)
+            measurable_thread = threading.Thread(target=self.run_measuareable)
             logging.info("Measurable start, processing...")
             measurable_thread.start()
 

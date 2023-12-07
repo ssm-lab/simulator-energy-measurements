@@ -62,12 +62,12 @@ from src.FixedPeriodMeasurement import FixedPeriodMeasurement
 fixed_period_measure = FixedPeriodMeasurement('energy_output.csv', 'data/').set_duration(2).set_period(60)
 ```
 
-## ModelExecutor
+## MeasurementExecutor
 
-- `ModelExecutor` is a base class that coordinates the execution of a measurable object (like a simulation) alongside energy measurements of the entire machine while program running. Users should extend this class and implement the `run_measurable` method to define the behavior of their measurable object.
+- `MeasurementExecutor` is a base class that coordinates the execution of a measurable object (like a simulation) alongside energy measurements of the entire machine while program running. Users should extend this class and implement the `run_measurable` method to define the behavior of their measurable object.
 
 ### Constructor:
-- `ModelExecutor()`: Initializes a new instance of the ModelExecutor class. No parameters are required for the constructor.
+- `MeasurementExecutor()`: Initializes a new instance of the MeasurementExecutor class. No parameters are required for the constructor.
 
 ### Fluent API Methods:
 - `set_heat_up(heat_up: int)`: Specifies the heat-up duration before the measurable object start, which indicate the energy consumed by the operating system and other tasks before the program running.
@@ -83,36 +83,33 @@ fixed_period_measure = FixedPeriodMeasurement('energy_output.csv', 'data/').set_
 - `run_measurable()`: An abstract method that should be implemented by the user to define the behavior of their measurable object.
 
 ### Example Usage:
-Here's an example of how to extend `ModelExecutor` for a simulation using the `Simulator` class from the `pypdevs` package:
+Here's an example of how to extend `MeasurementExecutor` for a simulation using the `Simulator` class from the `pypdevs` package:
 
 ```python
-from pypdevs.simulator import Simulator
-
-from src.DurationBasedMeasurement import DurationBasedMeasurement
 from GridModel import *
-from src.ModelExecutor import ModelExecutor
-from src.MeasurementExecutor import MeasurementExecutor
+from pypdevs.simulator import Simulator
+from DurationBasedMeasurementStrategy import DurationBasedMeasurementStrategy
+from MeasurementExecutor import MeasurementExecutor
+
 from util.singletonFlag import Singleton
 
 
-class Demo(ModelExecutor):
+class Demo(MeasurementExecutor):
     def __init__(self):
         super().__init__()
-        # config the measurement input file name and data folder
-        measure_model = DurationBasedMeasurement("test",
-                                                 "/home/yimoning/mcmaster/fall2023/sim_energy_measurements/data/")
-        # set up measurement executor
-        measure_executor = MeasurementExecutor(measure_model)
+        # config the measurement strategy input file name and data folder
+        measure_model = DurationBasedMeasurementStrategy("output.csv",
+                                                 "/file/to/your/data/")
         # create demo measurable program
         sirGrid = SIRGrid(100)
         measuareable = Simulator(sirGrid)
-        # config the ModelExecutor by calling fluent API methods
-        self.set_executor(measure_executor).set_measuareable(measuareable).set_heat_up(10).set_cool_down(10)
+        # config the MeasurementExecutor by calling fluent API methods
+        self.set_executor(measure_model).set_measuareable(measuareable).set_heat_up(10).set_cool_down(10)
 
     def run_measuareable(self):
         # define the behavior of their measurable object.
-        self.measuareable.setTerminationTime(1)
-        total_sim = 10
+        self.measuareable.setTerminationTime(10)
+        total_sim = 100
         self.measuareable.setVerbose(None)
         current = 0
         while current < total_sim:
@@ -120,7 +117,7 @@ class Demo(ModelExecutor):
             self.measuareable.simulate()
             current += 1
         Singleton.get_instance().store_time(label="sim_end")
-        self.measurable_end()
+        Singleton.get_instance().turnOff()
 
 if __name__ == '__main__':
     demo = Demo()
