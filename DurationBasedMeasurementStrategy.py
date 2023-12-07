@@ -23,7 +23,6 @@ class DurationBasedMeasurementStrategy(MeasurementStrategy):
 
     def measure(self):
         logging.info("Measurement start, waiting for measurable starts")
-
         while not us.Singleton.get_instance().getFlag():
             self.measure_func()
         logging.info("Measure done")

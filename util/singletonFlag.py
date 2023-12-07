@@ -6,25 +6,30 @@ from datetime import datetime
 
 class Singleton:
     _instance = None
-    _filepath = "/home/yimoning/mcmaster/fall2023/new_simMeasure/_remove/data/singleton_flag.txt"
-    _time_filepath = "/home/yimoning/mcmaster/fall2023/new_simMeasure/_remove/data/timestamps.csv"
 
-    def __init__(self):
+
+    def __init__(self, path):
         self.test = 0
+        self._filepath = os.path.join(path, "Singleton_flag.txt")
+        self._time_filepath = os.path.join(path, "timestamps.csv")
         if not os.path.exists(self._filepath):
             with open(self._filepath, 'w') as f:
                 f.write("False")
-        # Ensure the timestamp CSV file exists.
         if not os.path.exists(self._time_filepath):
             with open(self._time_filepath, 'w', newline='') as f:
                 writer = csv.writer(f)
-                # writer.writerow(["Timestamp"])
 
     @classmethod
-    def get_instance(cls):
+    def get_instance(cls, path=None):
         if cls._instance is None:
-            cls._instance = cls()
+            cls._instance = cls(path)
         return cls._instance
+
+    def set_path(self, path):
+        _filepath = os.path.join(path, "singleton_flag.txt")
+        _time_filepath = os.path.join(path, "timestamps.csv")
+
+
     # if flag is false: measurement will continue, otherwise keep running
     def turnOff(self):
         self.test += 1
