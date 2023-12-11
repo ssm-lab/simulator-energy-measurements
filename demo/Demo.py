@@ -6,11 +6,13 @@ from MeasurementExecutor import MeasurementExecutor
 class Demo(MeasurementExecutor):
     def __init__(self):
         super().__init__()
-        measure_model = DurationBasedMeasurementStrategy("test",
-                                                 "data_folder")
+        
         sirGrid = SIRGrid(10)
         sim = Simulator(sirGrid)
-        self.set_strategy(measure_model).set_measuareable(sim)
+
+        measurement_strategy = DurationBasedMeasurementStrategy("test", "data_folder")
+        
+        self.set_strategy(measurement_strategy).set_measuareable(sim)
 
     def run_measuareable(self):
         self.measuareable.setTerminationTime(10)
