@@ -7,7 +7,7 @@ class Demo(MeasurementExecutor):
     def __init__(self):
         super().__init__()
         measure_model = DurationBasedMeasurementStrategy("test",
-                                                 "/home/yimoning/mcmaster/fall2023/data")
+                                                 "data_folder")
         sirGrid = SIRGrid(10)
         sim = Simulator(sirGrid)
         self.set_strategy(measure_model).set_measuareable(sim)
