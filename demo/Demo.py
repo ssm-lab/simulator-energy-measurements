@@ -8,11 +8,11 @@ class Demo(MeasurementExecutor):
         super().__init__()
         
         sirGrid = SIRGrid(10)
-        sim = Simulator(sirGrid)
-
+        
+        measuareable = Simulator(sirGrid)
         measurement_strategy = DurationBasedMeasurementStrategy("test", "data_folder")
         
-        self.set_strategy(measurement_strategy).set_measuareable(sim)
+        self.set_strategy(measurement_strategy).set_measuareable(measuareable)
 
     def run_measuareable(self):
         self.measuareable.setTerminationTime(10)
