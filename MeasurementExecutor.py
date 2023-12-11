@@ -48,6 +48,7 @@ class MeasurementExecutor(ABC):
         except Exception as e:
             logging.error(f"Measurable thread error: {e}")
             self.measurable_success = False
+    
     @abstractmethod
     def run_measuareable(self):
         pass
