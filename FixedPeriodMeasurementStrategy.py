@@ -1,10 +1,7 @@
 import logging
 import time
-from datetime import datetime
 
 from MeasurementStrategy import MeasurementStrategy
-
-import util.singletonFlag as us
 
 
 class FixedPeriodMeasurementStrategy(MeasurementStrategy):
@@ -25,9 +22,9 @@ class FixedPeriodMeasurementStrategy(MeasurementStrategy):
     def _measure_func(self):
         time.sleep(self.duration)
 
-    def measure(self):
+    def measure(self, cooldown_second):
         logging.info("Measurement start, waiting for measurable")
-        while self.period > 0:
+        while self.period + cooldown_second > 0:
             self.measure_func()
             self.period -= self.duration
         logging.info("Measure done")

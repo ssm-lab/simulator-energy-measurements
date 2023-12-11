@@ -3,14 +3,11 @@ from pypdevs.simulator import Simulator
 from DurationBasedMeasurementStrategy import DurationBasedMeasurementStrategy
 from MeasurementExecutor import MeasurementExecutor
 
-from util.singletonFlag import Singleton
-
-
 class Demo(MeasurementExecutor):
     def __init__(self):
         super().__init__()
-        measure_model = DurationBasedMeasurementStrategy("test", "data/")
-        # measure_executor = MeasurementExecutor(measure_model)
+        measure_model = DurationBasedMeasurementStrategy("test",
+                                                 "/home/yimoning/mcmaster/fall2023/data")
         sirGrid = SIRGrid(10)
         sim = Simulator(sirGrid)
         self.set_strategy(measure_model).set_measuareable(sim)
@@ -24,9 +21,6 @@ class Demo(MeasurementExecutor):
             self.measuareable.setTerminationTime(current + 1)
             self.measuareable.simulate()
             current += 1
-        # print(str(end-start))
-        Singleton.get_instance().store_time(label="sim_end")
-        Singleton.get_instance().turnOff()
 
 if __name__ == '__main__':
     demo = Demo()

@@ -3,12 +3,13 @@ import threading
 import time
 from abc import ABC, abstractmethod
 from util.log_init import log_init
-from util.singletonFlag import Singleton
+import util.DummySignal as ud
 from MeasurementStrategy import MeasurementStrategy
 
-# put a measuareable
 class MeasurementExecutor(ABC):
     def __init__(self):
+        self.measure_success = False
+        self.measurable_success = False
         log_init()
         self.strategy = None
         self.measuareable = None
@@ -32,36 +33,46 @@ class MeasurementExecutor(ABC):
         self.strategy = new_strategy
         return self
 
+    def run_measure_wrapper(self):
+        try:
+            self.strategy.measure(self.cool_down)
+            self.measure_success = True
+        except Exception as e:
+            logging.error(f"Measure thread error: {e}")
+            self.measure_success = False
+
+    def run_measurable_wrapper(self):
+        try:
+            self.run_measuareable()
+            self.measurable_success = True
+        except Exception as e:
+            logging.error(f"Measurable thread error: {e}")
+            self.measurable_success = False
     @abstractmethod
     def run_measuareable(self):
         pass
-
-    def measurable_end(self):
-        Singleton.get_instance().turnOff()
 
 
     def run_model(self):
         try:
             logging.info("Process start")
-            singleton = Singleton.get_instance()
-            singleton.flag_init()
-            singleton.store_time(label="Start")
-
-            measure_thread = threading.Thread(target=self.strategy.measure)
-
+            self.measure_success = False
+            self.measurable_success = False
+            measure_thread = threading.Thread(target=self.run_measure_wrapper)
             measure_thread.start()
+            ud.DummySignal.get_instance().acquire_lock()
             time.sleep(self.heat_up)
-
-            measurable_thread = threading.Thread(target=self.run_measuareable)
+            measurable_thread = threading.Thread(target=self.run_measurable_wrapper)
             logging.info("Measurable start, processing...")
             measurable_thread.start()
-
-            measure_thread.join()
             measurable_thread.join()
-
-            singleton.flag_init()
-            logging.info("Process finished, success!")
+            logging.info("Measurable finished, cooling down ...")
+            ud.DummySignal.get_instance().release_lock(self.cool_down)
+            measure_thread.join()
+            if self.measurable_success and self.measure_success:
+                logging.info("Process finished, success!")
+            else:
+                logging.error("Process finished with errors")
         except Exception as e:
             logging.error(f"An error occurred: {e}")
-
 

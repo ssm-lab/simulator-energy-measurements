@@ -1,11 +1,7 @@
 import logging
 import time
-from datetime import datetime
-
 from MeasurementStrategy import MeasurementStrategy
-
-import util.singletonFlag as us
-
+import util.DummySignal as ud
 
 class DurationBasedMeasurementStrategy(MeasurementStrategy):
     def __init__(self, outfile_name, data_folder):
@@ -21,10 +17,11 @@ class DurationBasedMeasurementStrategy(MeasurementStrategy):
     def _measure_func(self):
         time.sleep(self.duration)
 
-    def measure(self):
+    def measure(self, cooldown_second):
         logging.info("Measurement start, waiting for measurable starts")
-        while not us.Singleton.get_instance().getFlag():
+        while not ud.DummySignal.get_instance().getFlag():
             self.measure_func()
+
         logging.info("Measure done")
         self.csv_handler.save_data()
         logging.info("Data successfully saved into" + self.file_loc)

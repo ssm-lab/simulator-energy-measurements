@@ -107,7 +107,6 @@ class Demo(MeasurementExecutor):
         self.set_strategy(measure_model).set_measuareable(measuareable).set_heat_up(10).set_cool_down(10)
 
     def run_measuareable(self):
-        # define the behavior of their measurable object.
         self.measuareable.setTerminationTime(10)
         total_sim = 100
         self.measuareable.setVerbose(None)
@@ -116,9 +115,7 @@ class Demo(MeasurementExecutor):
             self.measuareable.setTerminationTime(current + 1)
             self.measuareable.simulate()
             current += 1
-        Singleton.get_instance().store_time(label="sim_end")
-        Singleton.get_instance().turnOff()
-
+            
 if __name__ == '__main__':
     demo = Demo()
     demo.run_model()
