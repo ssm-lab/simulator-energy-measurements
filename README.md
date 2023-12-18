@@ -19,7 +19,7 @@ pyJoules uses the Intel Running Average Power Limit (RAPL) technology to estimat
 # How to Use
 # Getting Started with MeasurementExecutor
 
-Before diving into the Fluent API and specific measurement strategies, it's important to understand the foundational class at the core of this framework: `MeasurementExecutor`.
+Before diving into the API and specific measurement strategies, it's important to understand the foundational class at the core of this framework: `MeasurementExecutor`.
 
 ## Extending MeasurementExecutor
 
