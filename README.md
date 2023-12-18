@@ -64,9 +64,8 @@ The Fluent API enables you to set up your measurement strategies by chaining met
 This strategy is designed for measuring the energy consumed by each machine component periodically until a signal has been received.
 
 ### Constructor:
-- `DurationBasedMeasurement(outfile_name, data_folder)`: Initializes a new instance of the DurationBasedMeasurement class.
-  - `outfile_name`: The name of the output file where the measurement data will be saved.
-  - `data_folder`: The path to the directory where the output file will be stored.
+- `DurationBasedMeasurement(path='Your_Path')`: Initializes a new instance of the DurationBasedMeasurement class.
+  - `path`: keyword argument indicate where the output data will be stored
 
 #### API Methods:
 - `set_duration(seconds)`: Set the duration for energy measurement.
@@ -82,9 +81,8 @@ duration_measure = DurationBasedMeasurementStrategy('energy_output.csv', 'data/'
 ## FixedPeriodMeasurementStrategy
 
 This strategy periodically measures energy consumption in a fixed period. 
-- `FixedPeriodMeasurementStrategy(outfile_name, data_folder)`: Initializes a new instance of the FixedPeriodMeasurement class.
-  - `outfile_name`: The name of the output file where the measurement data will be saved.
-  - `data_folder:` The path to the directory where the output file will be stored.
+- `FixedPeriodMeasurementStrategy(path='Your_Path')`: Initializes a new instance of the FixedPeriodMeasurement class.
+  - `path`: keyword argument indicate where the output data will be stored
 #### API Methods:
 - `set_duration(seconds)`: Sets the duration of each measurement period.
   - `seconds`: The duration of one measurement period in seconds.
@@ -96,7 +94,7 @@ Example usage:
 from FixedPeriodMeasurementStrategy import FixedPeriodMeasurementStrategy
 
 # Instantiate and configure the FixedPeriodMeasurement strategy using Fluent API
-fixed_period_measure = FixedPeriodMeasurementStrategy('path/example.csv').set_duration(2).set_period(60)
+fixed_period_measure = FixedPeriodMeasurementStrategy(path='path/example.csv').set_duration(2).set_period(60)
 ```
 
 ## MeasurementExecutor
@@ -133,7 +131,7 @@ class Demo(MeasurementExecutor):
     def __init__(self):
         super().__init__()
         # config the measurement strategy input file name and data folder
-        measure_model = DurationBasedMeasurementStrategy("/file/to/store/your/data")
+        measure_model = DurationBasedMeasurementStrategy(path="/file/to/store/your/data")
         # create demo measurable program
         sirGrid = SIRGrid(100)
         measuareable = Simulator(sirGrid)

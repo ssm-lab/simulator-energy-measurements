@@ -5,7 +5,7 @@ from MeasurementStrategy import MeasurementStrategy
 
 
 class FixedPeriodMeasurementStrategy(MeasurementStrategy):
-    def __init__(self, path):
+    def __init__(self, path=None):
         super().__init__(path)
         self.duration = 1
         self.period = 10

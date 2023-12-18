@@ -6,13 +6,15 @@ import os
 
 class MeasurementStrategy(ABC):
 
-    def __init__(self, path):
+    def __init__(self, path=None):
+        if path is None:
+            path = os.path.join(os.getcwd(), 'data')
+            os.makedirs(path, exist_ok=True)
         self.csv_handler = CSVHandler(path)
 
     @abstractmethod
     def measure(self, cooldown_second: int):
         pass
-
 
     def cool_down(self, seconds):
         time.sleep(seconds)

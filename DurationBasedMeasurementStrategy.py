@@ -4,7 +4,7 @@ from MeasurementStrategy import MeasurementStrategy
 import util.lock as ud
 
 class DurationBasedMeasurementStrategy(MeasurementStrategy):
-    def __init__(self, path):
+    def __init__(self, path=None):
         super().__init__(path)
         self.duration = 1
         self.measure_func = self.measure_energy_decorator(self.csv_handler)(self._measure_func)
