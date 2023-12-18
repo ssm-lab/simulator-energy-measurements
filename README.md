@@ -128,8 +128,6 @@ from pypdevs.simulator import Simulator
 from DurationBasedMeasurementStrategy import DurationBasedMeasurementStrategy
 from MeasurementExecutor import MeasurementExecutor
 
-from util.singletonFlag import Singleton
-
 
 class Demo(MeasurementExecutor):
     def __init__(self):
