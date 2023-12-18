@@ -3,7 +3,7 @@ import threading
 import time
 from abc import ABC, abstractmethod
 from util.log_init import log_init
-import util.DummySignal as ud
+import util.lock as ud
 from MeasurementStrategy import MeasurementStrategy
 
 class MeasurementExecutor(ABC):
@@ -52,7 +52,6 @@ class MeasurementExecutor(ABC):
     @abstractmethod
     def run_measuareable(self):
         pass
-
 
     def run_model(self):
         try:

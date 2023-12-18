@@ -5,8 +5,8 @@ from MeasurementStrategy import MeasurementStrategy
 
 
 class FixedPeriodMeasurementStrategy(MeasurementStrategy):
-    def __init__(self, outfile_name, data_folder):
-        super().__init__(outfile_name, data_folder)
+    def __init__(self, path):
+        super().__init__(path)
         self.duration = 1
         self.period = 10
         self.measure_func = self.measure_energy_decorator(self.csv_handler)(self._measure_func)

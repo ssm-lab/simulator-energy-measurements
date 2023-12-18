@@ -1,11 +1,11 @@
 import logging
 import time
 from MeasurementStrategy import MeasurementStrategy
-import util.DummySignal as ud
+import util.lock as ud
 
 class DurationBasedMeasurementStrategy(MeasurementStrategy):
-    def __init__(self, outfile_name, data_folder):
-        super().__init__(outfile_name, data_folder)
+    def __init__(self, path):
+        super().__init__(path)
         self.duration = 1
         self.measure_func = self.measure_energy_decorator(self.csv_handler)(self._measure_func)
 

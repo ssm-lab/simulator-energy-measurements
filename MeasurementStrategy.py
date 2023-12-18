@@ -6,10 +6,8 @@ import os
 
 class MeasurementStrategy(ABC):
 
-    def __init__(self, outfile_name, data_folder):
-        self.DATA_FOLDER = data_folder
-        self.file_loc = os.path.join(data_folder, outfile_name)
-        self.csv_handler = CSVHandler(self.file_loc)
+    def __init__(self, path):
+        self.csv_handler = CSVHandler(path)
 
     @abstractmethod
     def measure(self, cooldown_second: int):

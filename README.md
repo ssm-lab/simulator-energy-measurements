@@ -17,7 +17,44 @@ pyJoules uses the Intel Running Average Power Limit (RAPL) technology to estimat
 - Install requirements via ```pip install -r requirements.txt```.
 
 # How to Use
+# Getting Started with MeasurementExecutor
 
+Before diving into the Fluent API and specific measurement strategies, it's important to understand the foundational class at the core of this framework: `MeasurementExecutor`.
+
+## Extending MeasurementExecutor
+
+To effectively use the measurement strategies provided in this framework, you will need to extend the `MeasurementExecutor` class. This is step allows you to integrate your specific measurable task (such as a simulation or any computational task) with the energy measurement process.
+
+### Implementing `run_measurable`
+
+After extending `MeasurementExecutor`, your primary task is to implement the `run_measurable` method. This method should contain the logic of your measurable task. During runtime, `MeasurementExecutor` will coordinate the execution of this task alongside the energy measurements, ensuring accurate and relevant energy consumption data is captured for your task.
+
+### Example Skeleton
+
+Here's a basic skeleton to get you started:
+
+```python
+from MeasurementExecutor import MeasurementExecutor
+
+class YourCustomExecutor(MeasurementExecutor):
+    def __init__(self):
+        super().__init__()
+        # Initialize your measurable task and any other necessary components here
+
+    def run_measurable(self):
+        # Implement the core logic of your measurable task here
+        pass
+
+# Example usage
+executor = YourCustomExecutor()
+executor.run_model()
+```
+
+Replace `YourCustomExecutor` with the name appropriate for your application. In the `__init__` method, set up your measurable task, and in `run_measurable`, implement its core logic.
+
+## Next Steps
+
+After setting up your custom executor by extending `MeasurementExecutor`, you're ready to dive into the Fluent API and Constructors to configure and utilize various measurement strategies.
 ## Fluent API and Constructors
 
 The Fluent API enables you to set up your measurement strategies by chaining method calls, resulting in a clear setup. Each strategy can be instantiated and configured using its constructor and fluent API methods.
@@ -59,7 +96,7 @@ Example usage:
 from FixedPeriodMeasurementStrategy import FixedPeriodMeasurementStrategy
 
 # Instantiate and configure the FixedPeriodMeasurement strategy using Fluent API
-fixed_period_measure = FixedPeriodMeasurementStrategy('energy_output.csv', 'data/').set_duration(2).set_period(60)
+fixed_period_measure = FixedPeriodMeasurementStrategy('path/example.csv').set_duration(2).set_period(60)
 ```
 
 ## MeasurementExecutor
@@ -98,8 +135,7 @@ class Demo(MeasurementExecutor):
     def __init__(self):
         super().__init__()
         # config the measurement strategy input file name and data folder
-        measure_model = DurationBasedMeasurementStrategy("output.csv",
-                                                 "/file/to/your/data/")
+        measure_model = DurationBasedMeasurementStrategy("/file/to/store/your/data")
         # create demo measurable program
         sirGrid = SIRGrid(100)
         measuareable = Simulator(sirGrid)
