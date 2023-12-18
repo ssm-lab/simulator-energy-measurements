@@ -23,7 +23,7 @@ Before diving into the API and specific measurement strategies, it's important t
 
 ## Extending MeasurementExecutor
 
-To effectively use the measurement strategies provided in this framework, you will need to extend the `MeasurementExecutor` class. This is step allows you to integrate your specific measurable task (such as a simulation or any computational task) with the energy measurement process.
+To effectively use the measurement strategies provided in this framework, you will need to extend the `MeasurementExecutor` class. This is the step allows you to integrate your specific measurable task (such as a simulation or any computational task) with the energy measurement process.
 
 ### Implementing `run_measurable`
 
